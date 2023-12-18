@@ -11,12 +11,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern.Flag;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -33,9 +31,9 @@ public class User {
     @Column(nullable = false, length = 60)
     private String name;
 
-    @Email(flags = Flag.CASE_INSENSITIVE, regexp = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+    @Email(flags = Flag.CASE_INSENSITIVE, regexp = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email Invalid")
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @NotNull
