@@ -1,5 +1,7 @@
 package com.ericksena.backendbarbeariatrainee.api.assembler;
 
+import java.util.Base64;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +18,12 @@ public class CustomerAssembler {
     private ModelMapper modelMapper;
 
     public CustomerDTO toModel(Customer customer) {
-        return modelMapper.map(customer, CustomerDTO.class);
+        CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
+        customerDTO.setName(customer.getUser().getName());
+        String credential = Base64.getEncoder().encodeToString(
+                (customer.getUser().getEmail() + ":" + customer.getUser().getPassword()).getBytes());
+        customerDTO.setCredential(credential);
+        return customerDTO;
     }
 
     public CustomerRegisterDTO toRegisterModel(Customer customer) {

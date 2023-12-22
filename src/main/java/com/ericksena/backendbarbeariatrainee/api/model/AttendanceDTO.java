@@ -8,7 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AttendanceDTO {
+    private Long id;
     private Long customerId;
+    private String customerName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean performed;

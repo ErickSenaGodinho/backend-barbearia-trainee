@@ -1,5 +1,6 @@
 package com.ericksena.backendbarbeariatrainee.domain.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,10 @@ public class AttendanceService {
                 .orElseThrow(() -> new AttendanceNotFoundException());
     }
 
-    public List<Attendance> findAll() {
-        return attendanceRepository.findAll();
+    public List<Attendance> findByInterval(String startDate, String endDate) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        return attendanceRepository.findByDateInterval(start, end);
     }
 
     @Transactional

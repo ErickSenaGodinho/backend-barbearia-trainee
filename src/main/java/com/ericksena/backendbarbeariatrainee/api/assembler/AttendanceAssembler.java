@@ -16,7 +16,9 @@ public class AttendanceAssembler {
     private ModelMapper modelMapper;
 
     public AttendanceDTO toModel(Attendance attendance) {
-        return modelMapper.map(attendance, AttendanceDTO.class);
+        AttendanceDTO attendanceDTO = modelMapper.map(attendance, AttendanceDTO.class);
+        attendanceDTO.setCustomerName(attendance.getCustomer().getUser().getName());
+        return attendanceDTO;
     }
 
     public List<AttendanceDTO> toCollectionModel(List<Attendance> attendances) {

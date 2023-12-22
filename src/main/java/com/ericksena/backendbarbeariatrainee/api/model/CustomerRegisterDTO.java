@@ -11,5 +11,4 @@ public class CustomerRegisterDTO {
     private String password;
     private String cpf;
     private String phone;
-
 }

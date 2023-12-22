@@ -3,11 +3,13 @@ package com.ericksena.backendbarbeariatrainee.api.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,7 @@ import com.ericksena.backendbarbeariatrainee.domain.service.CustomerService;
 
 @RestController
 @RequestMapping("/customer")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CustomerController {
 
     @Autowired
@@ -36,11 +39,11 @@ public class CustomerController {
     }
 
     @PutMapping(value = "/{id}")
-    public CustomerDTO update(@PathVariable Long id, @RequestBody CustomerRegisterDTO customerRegisterDTO) {
+    public CustomerDTO update(@RequestHeader("Authorization") String authHeader, @PathVariable Long id,
+            @RequestBody CustomerRegisterDTO customerRegisterDTO) {
         Customer customer = customerAssembler.toEntity(customerRegisterDTO);
         customer.setId(id);
-        Customer updatedCustomer = customerService.update(customer);
-        return customerAssembler.toModel(updatedCustomer);
+        return customerService.update(customer, authHeader);
     }
 
     @DeleteMapping("/{id}")

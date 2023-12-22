@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +26,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/attendance")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AttendanceController {
 
     @Autowired
@@ -31,15 +34,16 @@ public class AttendanceController {
     @Autowired
     private AttendanceAssembler attendanceAssembler;
 
-    @GetMapping()
-    public List<AttendanceDTO> list() {
-        return attendanceAssembler.toCollectionModel(attendanceService.findAll());
-    }
-
     @GetMapping("/{id}")
     public AttendanceDTO findById(@PathVariable Long id) {
         Attendance foundAttendance = attendanceService.findById(id);
         return attendanceAssembler.toModel(foundAttendance);
+    }
+
+    @GetMapping("/week")
+    public List<AttendanceDTO> listByInterval(@RequestParam String startDate, @RequestParam String endDate) {
+        List<Attendance> attendances = attendanceService.findByInterval(startDate, endDate);
+        return attendanceAssembler.toCollectionModel(attendances);
     }
 
     @PostMapping()
