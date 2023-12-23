@@ -12,10 +12,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "service")
-public class Service {
+@Table(name = "attendance")
+public class Attendance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,5 +38,9 @@ public class Service {
     @NotNull
     @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
+
+    @NotNull
+    @Column(columnDefinition = "boolean default false")
+    private boolean performed;
 
 }
